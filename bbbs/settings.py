@@ -146,3 +146,5 @@ REST_FRAMEWORK = {
         # Any other parsers
     ),
 }
+
+AUTH_USER_MODEL = 'account.CustomUser'
