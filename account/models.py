@@ -1,5 +1,7 @@
+import jwt
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.db import models
+from django.core.mail import send_mail
 from rest_framework_simplejwt.tokens import RefreshToken
 
 
@@ -12,7 +14,7 @@ class CustomAccountManager(BaseUserManager):
             raise TypeError('Users should have a Email')
 
         user = self.model(username=username, email=self.normalize_email(email))
-        user.set_unusable_password()
+        user.set_password(password)
         user.save()
         return user
 
@@ -28,8 +30,8 @@ class CustomAccountManager(BaseUserManager):
         user.save()
         return user
 
-    def get_by_natural_key(self, username):
-        return self.get(username=username)
+    def get_by_natural_key(self, email):
+        return self.get(email=email)
 
 
 class CustomUser(AbstractUser):
@@ -51,7 +53,7 @@ class CustomUser(AbstractUser):
     is_verified = models.BooleanField(default=False)
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ('username',)
+    REQUIRED_FIELDS = ['username']
 
     objects = CustomAccountManager()
 
@@ -69,7 +71,7 @@ class CustomUser(AbstractUser):
         }
 
     def natural_key(self):
-        return (self.username,)
+        return (self.email,)
 
     def __str__(self):
         return self.email
