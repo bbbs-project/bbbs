@@ -4,6 +4,8 @@ from django.db import models
 from django.core.mail import send_mail
 from rest_framework_simplejwt.tokens import RefreshToken
 
+from event.models import City
+
 
 class CustomAccountManager(BaseUserManager):
 
@@ -38,19 +40,27 @@ class CustomUser(AbstractUser):
     ADMIN = 'admin'
     MODERATOR = 'moderator'
     USER = 'user'
+    REGIONAL_MODERATOR = 'regional moderator'
+    MENTOR = 'mentor'
     ROLES = [
         (ADMIN, 'Administrator'),
         (MODERATOR, 'Moderator'),
-        (USER, 'User'),
+        (REGIONAL_MODERATOR, 'Regional moderator'),
+        (MENTOR, 'Mentor')
     ]
     email = models.EmailField(max_length=254, unique=True)
     bio = models.TextField(blank=True)
     role = models.CharField(
-        max_length=9,
+        max_length=30,
         choices=ROLES,
-        default=USER,
+        default=MENTOR,
     )
-    is_verified = models.BooleanField(default=False)
+    city = models.ManyToManyField(
+        to=City,
+        blank=True,
+        related_name='user',
+        verbose_name='Город(a) пользователя'
+    )
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
@@ -85,5 +95,5 @@ class CustomUser(AbstractUser):
         return self.role == self.MODERATOR
 
     @property
-    def is_user_role(self):
-        return self.role == self.USER
+    def is_regional_moderator_role(self):
+        return self.role == self.REGIONAL_MODERATOR
