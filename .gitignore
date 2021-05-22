@@ -2,3 +2,8 @@ __pycache__/
 .direnv
 db.sqlite3
 .idea
+
+venv/
+.venv
+sent_emails/
+.vscode
