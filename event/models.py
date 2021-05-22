@@ -13,7 +13,7 @@ class Event(models.Model):
     starts_at = models.DateTimeField()
     ends_at = models.DateTimeField()
     seats = models.PositiveSmallIntegerField()
-    city = models.ForeignKey('City', blank=False, on_delete=models.DO_NOTHING, related_name='event')#, limit_choices_to={'user': 12})
+    city = models.ForeignKey('City', blank=False, on_delete=models.DO_NOTHING, related_name='event')
 
     def __str__(self):
         return self.title

@@ -14,6 +14,14 @@ class EventAdmin(admin.ModelAdmin):
     search_fields = ('title',)
     list_filter = ('booked',)
     readonly_fields = ('booked',)
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        '''
+        для ограничения выбора городов мероприятия региональным модераторм
+        '''
+        if db_field.name == 'city' and request.user.is_regional_moderator_role:
+            kwargs['queryset'] = City.objects.filter(user=request.user)
+        return super(EventAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
     
     def get_queryset(self, request):
         '''
