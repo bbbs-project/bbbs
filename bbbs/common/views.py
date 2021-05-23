@@ -1,3 +1,4 @@
+from django.shortcuts import get_object_or_404
 from rest_framework import generics
 
 from bbbs.common.models import City, Profile
@@ -10,5 +11,8 @@ class CityList(generics.ListAPIView):
 
 
 class ProfileView(generics.RetrieveUpdateAPIView):
-    queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
+
+    def get_object(self):
+        obj = get_object_or_404(Profile, user=self.request.user)
+        return obj
