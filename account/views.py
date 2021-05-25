@@ -10,14 +10,10 @@ from .permissions import HasAdminRole
 from .serializers import UserSerializer
 
 
-class ListRetrieveUpdateViewSet(mixins.ListModelMixin,
-                           mixins.RetrieveModelMixin,
-                           mixins.UpdateModelMixin,
-                           viewsets.GenericViewSet):
-    pass
-
-
-class UserViewSet(ListRetrieveUpdateViewSet):
+class UserViewSet(mixins.ListModelMixin,
+                  mixins.RetrieveModelMixin,
+                  mixins.UpdateModelMixin,
+                  viewsets.GenericViewSet):
     queryset = CustomUser.objects.all()
     serializer_class = UserSerializer
     permission_classes = [IsAuthenticated, HasAdminRole]
@@ -25,12 +21,10 @@ class UserViewSet(ListRetrieveUpdateViewSet):
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
     filterset_fields = ['email', ]
     search_fields = ['email', ]
-    lookup_field = 'email'
-    lookup_value_regex = '[\w@.]+'  # https://stackoverflow.com/a/55876846
 
     @action(detail=False,
             methods=['get'],
-            permission_classes=[IsAuthenticated])
+            permission_classes=[IsAuthenticated, HasAdminRole])
     def me(self, request):
         serializer = self.get_serializer(self.request.user)
         return Response(serializer.data,

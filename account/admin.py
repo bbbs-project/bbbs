@@ -1,6 +1,5 @@
 from django.contrib import admin
 from django.contrib.auth import get_user_model
-from django.conf import settings
 from django.contrib.auth.admin import UserAdmin
 
 from .forms import CustomUserCreationForm, CustomUserChangeForm
@@ -22,8 +21,8 @@ class CustomUserAdmin(UserAdmin):
         ('Important dates', {'fields': ('last_login', 'date_joined',)})
     )
     add_fieldsets = (
-        (None, {'classes': ('wide',), 'fields': ('email', 'username', 'role', 'city',
-         'is_staff', 'is_superuser', 'password1', 'password2')}),
+        (None, {'classes': ('wide',), 'fields': ('email', 'username', 'role',
+         'city', 'is_staff', 'is_superuser', 'password1', 'password2')}),
     )
 
 

@@ -1,7 +1,5 @@
-import jwt
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.db import models
-from django.core.mail import send_mail
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from event.models import City
@@ -54,6 +52,7 @@ class CustomUser(AbstractUser):
         max_length=30,
         choices=ROLES,
         default=MENTOR,
+        verbose_name='Роль пользователя'
     )
     city = models.ManyToManyField(
         to=City,
@@ -97,3 +96,7 @@ class CustomUser(AbstractUser):
     @property
     def is_regional_moderator_role(self):
         return self.role == self.REGIONAL_MODERATOR
+
+    @property
+    def is_mentor(self):
+        return self.role == self.MENTOR

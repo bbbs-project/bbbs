@@ -19,7 +19,7 @@ class CustomUserCreationForm(UserCreationForm):
         user.set_password(self.cleaned_data["password1"])
         send_mail(
             subject='Получения токена',
-            message=f'Пароль {password} для получения токена',
+            message=f'Используйте этот пароль {password} для получения токена',
             from_email='super@super.fake',
             recipient_list=[email]
         )
