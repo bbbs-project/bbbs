@@ -33,7 +33,7 @@ class EventViewSet(mixins.ListModelMixin,
                     filter=Q(participants__participant=user)
                 ),
                 taken_seats=Count('participants__participant')).all()
-        user_cities = user.city.values_list('id')
+        user_cities = user.city.all()
         return (
             models.Event.objects.annotate(booked=Count('participants__participant', filter=Q(participants__participant=user)),
                                           taken_seats=Count('participants__participant')).filter(city__in=user_cities)

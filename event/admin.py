@@ -30,7 +30,7 @@ class EventAdmin(admin.ModelAdmin):
         '''
         qs = super().get_queryset(request)
         if request.user.is_regional_moderator_role:
-            return qs.filter(city__in=request.user.city.values_list('id'))
+            return qs.filter(city__in=request.user.city.all())
         return qs
 
 
