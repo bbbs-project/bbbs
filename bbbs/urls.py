@@ -15,12 +15,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, re_path
+from django.urls.conf import include
 from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
-from rest_framework_simplejwt import views as jwt_views
 
 from bbbs.afisha.views import EventList, EventParticipantList
-from bbbs.common.views import CityList, ProfileView
 from bbbs.main.views import MainView
 
 schema_view = get_schema_view(
@@ -43,11 +42,7 @@ urlpatterns = [
     re_path(r'^swagger/$', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     re_path(r'^redoc/$', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
 
-    path('api/v1/token/', jwt_views.TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('api/v1/token/refresh/', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),
-
-    path('api/v1/cities/', CityList.as_view()),
-    path('api/v1/profile/', ProfileView.as_view()),
+    path('api/', include('bbbs.common.urls')),
     path('api/v1/main/', MainView.as_view()),
     path('api/v1/afisha/events/', EventList.as_view()),
     path('api/v1/afisha/event-participants/', EventParticipantList.as_view()),

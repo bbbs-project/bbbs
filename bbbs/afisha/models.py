@@ -1,10 +1,8 @@
-from django.contrib.auth import get_user_model
 from django.db import models
-
+from django.conf import settings
 from bbbs.common.models import City
 
-
-User = get_user_model()
+User = settings.AUTH_USER_MODEL
 
 
 class Event(models.Model):

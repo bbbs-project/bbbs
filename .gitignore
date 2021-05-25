@@ -7,3 +7,6 @@ venv/
 .venv
 sent_emails/
 .vscode
+
+tests/
+pytest.ini
