@@ -42,11 +42,11 @@ class EventParticipantSerializer(serializers.ModelSerializer):
         """
         event = data['event']
         participant = data['participant']
-        taken_seats = EventParticipant.objects.filter(event=event).count()
         if event.city not in participant.city.all():
             raise serializers.ValidationError(
                 'Город проведения мероприятия не входит в ваши города'
             )
+        taken_seats = event.participants.all().count()
         if taken_seats == event.seats:
             raise serializers.ValidationError(
                 'К сожалению, свободных мест не осталось'
