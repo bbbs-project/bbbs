@@ -65,6 +65,7 @@ class ProfileAdmin(admin.ModelAdmin):
         return request.user.is_superuser or (request.user.is_staff and
                                              request.user.is_admin_role)
 
+
 admin.site.unregister(Group)
 admin.site.register(User, CustomUserAdmin)
 admin.site.register(Profile, ProfileAdmin)

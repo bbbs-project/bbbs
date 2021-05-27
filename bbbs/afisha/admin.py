@@ -38,4 +38,5 @@ class EventAdmin(admin.ModelAdmin):
     def has_view_permission(self, request, obj=None):
         return request.user.is_superuser or request.user.is_staff
 
+
 admin.site.register(Event, EventAdmin)
