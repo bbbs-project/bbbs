@@ -23,5 +23,6 @@ class Event(models.Model):
 
 
 class EventParticipant(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    event = models.OneToOneField(Event, on_delete=models.RESTRICT)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    event = models.ForeignKey(Event, on_delete=models.RESTRICT,
+                              related_name='participants')
