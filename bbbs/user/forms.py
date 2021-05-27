@@ -1,8 +1,6 @@
 from django.core.mail import send_mail
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
-from django.core.exceptions import ObjectDoesNotExist
-from django.forms import ValidationError
 
 
 CustomUser = get_user_model()
@@ -17,7 +15,11 @@ class CustomUserCreationForm(UserCreationForm):
     def save(self, commit=True):
         user = super().save(commit=False)
         user.username = user.email
-        password = self.cleaned_data['password1']  # для отправки пароля почтой
+        if (user.is_admin_role
+            or user.is_moderator_role
+            or user.is_regional_moderator_role):
+            user.is_staff = True
+        password = self.cleaned_data['password1']
         email = self.cleaned_data['email']
         user.set_password(self.cleaned_data['password1'])
         send_mail(
