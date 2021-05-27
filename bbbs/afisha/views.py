@@ -1,14 +1,75 @@
-from rest_framework import generics
+from django.db.models import Count, Q
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import filters, mixins, viewsets
+from rest_framework.pagination import PageNumberPagination
+from rest_framework.permissions import IsAuthenticated
 
-from bbbs.afisha.models import Event, EventParticipant
-from bbbs.afisha.serializers import EventSerializer, EventParticipantSerializer
-
-
-class EventList(generics.ListAPIView):
-    queryset = Event.objects.all().order_by('start_at')
-    serializer_class = EventSerializer
+from . import models, serializers
 
 
-class EventParticipantList(generics.ListCreateAPIView, generics.DestroyAPIView):
-    queryset = EventParticipant.objects.all()
-    serializer_class = EventParticipantSerializer
+class ListRetrieveUpdateViewSet(mixins.ListModelMixin,
+                                mixins.RetrieveModelMixin,
+                                mixins.UpdateModelMixin,
+                                viewsets.GenericViewSet):
+    pass
+
+
+class EventViewSet(mixins.ListModelMixin,
+                   mixins.RetrieveModelMixin,
+                   viewsets.GenericViewSet):
+    serializer_class = serializers.EventSerializer
+    permission_classes = [IsAuthenticated]
+    pagination_class = PageNumberPagination
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter]
+    filterset_fields = ('starts_at',)
+    search_fields = ('title',)
+
+    def get_queryset(self):
+        user = self.request.user
+        if user.is_admin_role:
+            return models.Event.objects.annotate(
+                booked=Count(
+                    'participants__participant',
+                    filter=Q(participants__participant=user)
+                ),
+                taken_seats=Count(
+                    'participants__participant'
+                )).all().order_by('id')
+        user_cities = user.profile.city.all()
+        return (
+            models.Event.objects.annotate(
+                booked=Count(
+                    'participants__participant', filter=Q(
+                        participants__participant=user
+                    )
+                ),
+                taken_seats=Count('participants__participant')
+            ).filter(
+                    city__in=user_cities
+                ).order_by('id')
+        )
+
+
+class EventParticipantViewSet(mixins.ListModelMixin,
+                              mixins.RetrieveModelMixin,
+                              mixins.CreateModelMixin,
+                              mixins.DestroyModelMixin,
+                              viewsets.GenericViewSet):
+    queryset = models.EventParticipant.objects.all()
+    serializer_class = serializers.EventParticipantSerializer
+    permission_classes = [IsAuthenticated]
+    pagination_class = PageNumberPagination
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter]
+    filterset_fields = ('event',)
+    search_fields = ('event',)
+
+
+class CityViewSet(mixins.ListModelMixin,
+                  mixins.RetrieveModelMixin,
+                  viewsets.GenericViewSet):
+    queryset = models.City.objects.all()
+    serializer_class = serializers.CitySerializer
+    pagination_class = PageNumberPagination
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter]
+    filterset_fields = ('is_primary',)
+    search_fields = ('name',)

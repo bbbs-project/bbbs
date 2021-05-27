@@ -4,7 +4,6 @@ from django.urls.conf import include
 from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
 
-from bbbs.afisha.views import EventList, EventParticipantList
 from bbbs.main.views import MainView
 
 schema_view = get_schema_view(
@@ -23,12 +22,16 @@ schema_view = get_schema_view(
 urlpatterns = [
     path('admin/', admin.site.urls),
 
-    re_path(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
-    re_path(r'^swagger/$', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
-    re_path(r'^redoc/$', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
-
+    re_path(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(
+       cache_timeout=0
+    ), name='schema-json'),
+    re_path(r'^swagger/$', schema_view.with_ui(
+       'swagger', cache_timeout=0
+    ), name='schema-swagger-ui'),
+    re_path(r'^redoc/$', schema_view.with_ui(
+       'redoc', cache_timeout=0
+    ), name='schema-redoc'),
+    path('api/', include('bbbs.afisha.urls')),
     path('api/', include('bbbs.common.urls')),
     path('api/v1/main/', MainView.as_view()),
-    path('api/v1/afisha/events/', EventList.as_view()),
-    path('api/v1/afisha/event-participants/', EventParticipantList.as_view()),
 ]

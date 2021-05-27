@@ -1,7 +1,6 @@
 from django.conf import settings
 from django.db import models
 
-
 User = settings.AUTH_USER_MODEL
 
 
@@ -18,7 +17,12 @@ class City(models.Model):
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    city = models.OneToOneField(City, on_delete=models.RESTRICT)
+    city = models.ManyToManyField(
+        to=City,
+        blank=True,
+        related_name='user',
+        verbose_name='Город(a) пользователя'
+    )
 
     def __str__(self):
         return self.user.username

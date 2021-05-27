@@ -1,7 +1,6 @@
-from django.core.mail import send_mail
 from django.contrib.auth import get_user_model
-from django.contrib.auth.forms import UserCreationForm, UserChangeForm
-
+from django.contrib.auth.forms import UserChangeForm, UserCreationForm
+from django.core.mail import send_mail
 
 CustomUser = get_user_model()
 
@@ -15,9 +14,11 @@ class CustomUserCreationForm(UserCreationForm):
     def save(self, commit=True):
         user = super().save(commit=False)
         user.username = user.email
-        if (user.is_admin_role
-            or user.is_moderator_role
-            or user.is_regional_moderator_role):
+        if (
+            user.is_admin_role or
+            user.is_moderator_role or
+            user.is_regional_moderator_role
+        ):
             user.is_staff = True
         password = self.cleaned_data['password1']
         email = self.cleaned_data['email']

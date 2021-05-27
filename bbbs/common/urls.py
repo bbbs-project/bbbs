@@ -1,7 +1,6 @@
 from django.urls import include, path
 from rest_framework_simplejwt import views as jwt_views
 
-
 from .views import CityList, ProfileView
 
 patterns_auth = [
