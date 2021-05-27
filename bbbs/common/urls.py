@@ -1,12 +1,9 @@
 from django.urls import include, path
-from rest_framework.routers import DefaultRouter
 from rest_framework_simplejwt import views as jwt_views
 
 
 from .views import CityList, ProfileView
 
-#router = DefaultRouter()
-#router.register('users', UserViewSet, basename='UserView')
 patterns_auth = [
     path('profile/', ProfileView.as_view(), name='profile'),
     path('cities/', CityList.as_view(), name='city'),
@@ -18,5 +15,4 @@ patterns_auth = [
 
 urlpatterns = [
     path('v1/', include(patterns_auth)),
-    #path('v1/', include(router.urls)),
 ]
