@@ -6,7 +6,7 @@ from django.dispatch import receiver
 
 class City(models.Model):
     name = models.CharField(verbose_name='Название', max_length=30)
-    is_primary = models.BooleanField(verbose_name='Первичный(???)', default=False)
+    is_primary = models.BooleanField(verbose_name='Столица', default=False)
 
     def __str__(self):
         return self.name

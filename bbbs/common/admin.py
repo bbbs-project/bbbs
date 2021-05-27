@@ -42,3 +42,8 @@ class UserAdmin(admin.ModelAdmin):
             recipient_list=[email])
         obj.save()
 
+
+@admin.register(City)
+class CityAdmin(admin.ModelAdmin):
+    list_display = ['name',]
+
