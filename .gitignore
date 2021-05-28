@@ -5,3 +5,6 @@ db.sqlite3
 venv/
 .vscode/
 
+sent_emails/
+tests/
+pytest.ini
