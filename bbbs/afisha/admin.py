@@ -26,8 +26,8 @@ class EventAdmin(admin.ModelAdmin):
         return qs
 
     def has_add_permission(self, request):
-        return request.user.is_superuser or (request.user.is_staff and
-                                             request.user.is_admin_role)
+        return request.user.is_superuser or (request.user.is_staff
+                                             and request.user.is_admin_role)
 
     def has_change_permission(self, request, obj=None):
         return request.user.is_superuser or request.user.is_staff

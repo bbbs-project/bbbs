@@ -15,9 +15,9 @@ class CustomUserCreationForm(UserCreationForm):
         user = super().save(commit=False)
         user.username = user.email
         if (
-            user.is_admin_role or
-            user.is_moderator_role or
-            user.is_regional_moderator_role
+            user.is_admin_role
+            or user.is_moderator_role
+            or user.is_regional_moderator_role
         ):
             user.is_staff = True
         password = self.cleaned_data['password1']

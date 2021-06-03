@@ -1,17 +1,9 @@
 from django.db.models import Count, Q
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters, mixins, viewsets
-from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
 
 from . import models, serializers
-
-
-class ListRetrieveUpdateViewSet(mixins.ListModelMixin,
-                                mixins.RetrieveModelMixin,
-                                mixins.UpdateModelMixin,
-                                viewsets.GenericViewSet):
-    pass
 
 
 class EventViewSet(mixins.ListModelMixin,
@@ -19,7 +11,6 @@ class EventViewSet(mixins.ListModelMixin,
                    viewsets.GenericViewSet):
     serializer_class = serializers.EventSerializer
     permission_classes = [IsAuthenticated]
-    pagination_class = PageNumberPagination
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
     filterset_fields = ('starts_at',)
     search_fields = ('title',)
@@ -44,9 +35,7 @@ class EventViewSet(mixins.ListModelMixin,
                     )
                 ),
                 taken_seats=Count('participants__participant')
-            ).filter(
-                    city__in=user_cities
-                ).order_by('id')
+            ).filter(city__in=user_cities).order_by('id')
         )
 
 
@@ -58,18 +47,6 @@ class EventParticipantViewSet(mixins.ListModelMixin,
     queryset = models.EventParticipant.objects.all()
     serializer_class = serializers.EventParticipantSerializer
     permission_classes = [IsAuthenticated]
-    pagination_class = PageNumberPagination
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
     filterset_fields = ('event',)
     search_fields = ('event',)
-
-
-class CityViewSet(mixins.ListModelMixin,
-                  mixins.RetrieveModelMixin,
-                  viewsets.GenericViewSet):
-    queryset = models.City.objects.all()
-    serializer_class = serializers.CitySerializer
-    pagination_class = PageNumberPagination
-    filter_backends = [DjangoFilterBackend, filters.SearchFilter]
-    filterset_fields = ('is_primary',)
-    search_fields = ('name',)

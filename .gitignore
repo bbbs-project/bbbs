@@ -8,3 +8,4 @@ venv/
 sent_emails/
 tests/
 pytest.ini
+.env

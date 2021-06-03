@@ -12,11 +12,16 @@ class City(models.Model):
         return self.name
 
     class Meta:
-        verbose_name_plural = "Cities"
+        verbose_name_plural = 'Cities'
+        ordering = ['-is_primary']
 
 
 class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(
+        User,
+        on_delete=models.CASCADE,
+        related_name='profile'
+    )
     city = models.ManyToManyField(
         to=City,
         blank=True,

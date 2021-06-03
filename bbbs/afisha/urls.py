@@ -5,7 +5,6 @@ from . import views
 
 v1_router = DefaultRouter()
 v1_router.register('afisha/events', views.EventViewSet, basename='events')
-v1_router.register('cities', views.CityViewSet, basename='cities')
 v1_router.register(
     'afisha/event-participants',
     views.EventParticipantViewSet,
