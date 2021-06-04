@@ -22,11 +22,10 @@ class Profile(models.Model):
         on_delete=models.CASCADE,
         related_name='profile'
     )
-    city = models.ManyToManyField(
-        to=City,
-        blank=True,
+    city = models.OneToOneField(
+        City,
+        on_delete=models.RESTRICT,
         related_name='user',
-        verbose_name='Город(a) пользователя'
     )
 
     def __str__(self):
