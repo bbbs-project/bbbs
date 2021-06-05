@@ -1,7 +1,7 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers, validators
 
-from .models import City, Event, EventParticipant
+from .models import Event, EventParticipant
 
 CustomUser = get_user_model()
 
@@ -40,7 +40,7 @@ class EventParticipantSerializer(serializers.ModelSerializer):
         """
         event = data['event']
         participant = data['participant']
-        if event.city not in participant.profile.city.all():
+        if not participant.profile.city.filter(id=event.city_id).exists():
             raise serializers.ValidationError(
                 'Город проведения мероприятия не входит в ваши города'
             )
@@ -50,10 +50,3 @@ class EventParticipantSerializer(serializers.ModelSerializer):
                 'К сожалению, свободных мест не осталось'
             )
         return data
-
-
-class CitySerializer(serializers.ModelSerializer):
-
-    class Meta:
-        fields = '__all__'
-        model = City
