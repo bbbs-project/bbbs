@@ -22,7 +22,7 @@ class EventAdmin(admin.ModelAdmin):
         '''
         qs = super().get_queryset(request)
         if request.user.is_regional_moderator_role:
-            return qs.filter(city__in=request.user.profile.city.all())
+            return qs.filter(city=request.user.profile.city_id)
         return qs
 
     def has_add_permission(self, request):
