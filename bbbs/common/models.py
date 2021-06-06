@@ -22,10 +22,10 @@ class Profile(models.Model):
         on_delete=models.CASCADE,
         related_name='profile'
     )
-    city = models.OneToOneField(
+    city = models.ForeignKey(
         City,
         on_delete=models.RESTRICT,
-        related_name='user',
+        related_name='user'
     )
 
     def __str__(self):
