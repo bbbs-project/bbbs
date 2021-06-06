@@ -40,9 +40,10 @@ class EventParticipantSerializer(serializers.ModelSerializer):
         """
         event = data['event']
         participant = data['participant']
-        if not participant.profile.city.filter(id=event.city_id).exists():
+        if event.city != participant.profile.city:
             raise serializers.ValidationError(
-                'Город проведения мероприятия не входит в ваши города'
+                'Город проведения мероприятия отличается от '
+                'города, указанного в вашем профиля'
             )
         taken_seats = event.participants.all().count()
         if taken_seats == event.seats:
