@@ -26,7 +26,6 @@ class EventViewSet(mixins.ListModelMixin,
                 taken_seats=Count(
                     'participants__participant'
                 )).all().order_by('id')
-        user_cities = user.profile.city.all()
         return (
             models.Event.objects.annotate(
                 booked=Count(
@@ -35,7 +34,7 @@ class EventViewSet(mixins.ListModelMixin,
                     )
                 ),
                 taken_seats=Count('participants__participant')
-            ).filter(city__in=user_cities).order_by('id')
+            ).filter(city=user.profile.city_id).order_by('id')
         )
 
 
