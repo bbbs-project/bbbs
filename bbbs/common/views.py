@@ -27,4 +27,3 @@ class ProfileView(generics.RetrieveUpdateAPIView):
         obj = get_object_or_404(Profile, user=user)
         self.check_object_permissions(self.request, obj)
         return obj
-        

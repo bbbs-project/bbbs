@@ -25,7 +25,9 @@ class Profile(models.Model):
     city = models.ForeignKey(
         City,
         on_delete=models.RESTRICT,
-        related_name='user'
+        related_name='user',
+        blank=True,
+        null=True
     )
 
     def __str__(self):

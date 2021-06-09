@@ -10,17 +10,10 @@ from .forms import CustomUserChangeForm, CustomUserCreationForm
 User = get_user_model()
 
 
-class ProfileInline(admin.TabularInline):
-    model = Profile
-
-
 class CustomUserAdmin(UserAdmin):
     add_form = CustomUserCreationForm
     form = CustomUserChangeForm
     model = User
-    inlines = [
-        ProfileInline,
-    ]
     list_display = ('email', 'username', 'first_name', 'last_name', 'role')
     readonly_fields = ('last_login', 'date_joined',)
     fieldsets = (
