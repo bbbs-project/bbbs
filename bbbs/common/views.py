@@ -2,9 +2,9 @@ from django.shortcuts import get_object_or_404
 from rest_framework import generics, mixins, viewsets
 from rest_framework.permissions import IsAuthenticated
 
-from .models import City, Profile
+from .models import City, Profile, Tag
 from .permission import IsAuthorOrReadOnlyPermission
-from .serializers import CitySerializer, ProfileSerializer
+from .serializers import CitySerializer, ProfileSerializer, TagSerializer
 from bbbs.user.models import CustomUser
 
 
@@ -27,4 +27,9 @@ class ProfileView(generics.RetrieveUpdateAPIView):
         obj = get_object_or_404(Profile, user=user)
         self.check_object_permissions(self.request, obj)
         return obj
-        
+
+
+class TagList(generics.ListAPIView):
+    queryset = Tag.objects.all().order_by('-name')
+    serializer_class = TagSerializer
+    pagination_class = None

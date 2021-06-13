@@ -34,3 +34,7 @@ class CustomUser(AbstractUser):
     @property
     def is_regional_moderator_role(self):
         return self.role == UserRole.REGIONAL_MODERATOR
+
+    @property
+    def is_mentore_role(self):
+        return self.role == UserRole.MENTOR

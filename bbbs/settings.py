@@ -27,6 +27,7 @@ INSTALLED_APPS = [
     'bbbs.user',
     'bbbs.afisha',
     'bbbs.common',
+    'bbbs.rights',
 ]
 
 MIDDLEWARE = [

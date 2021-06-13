@@ -25,8 +25,22 @@ class Profile(models.Model):
     city = models.ForeignKey(
         City,
         on_delete=models.RESTRICT,
-        related_name='user'
+        related_name='user',
+        blank=True,
+        null=True
     )
 
     def __str__(self):
         return self.user.username
+
+
+class Tag(models.Model):
+    name = models.CharField(max_length=50, unique=True)
+    slug = models.SlugField(max_length=50, unique=True)
+
+    class Meta:
+        verbose_name = 'Тег'
+        verbose_name_plural = 'Теги'
+
+    def __str__(self):
+        return self.name
