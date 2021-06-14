@@ -13,22 +13,19 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='City',
+            name='Tag',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=30)),
-                ('is_primary', models.BooleanField(default=False)),
+                ('name', models.CharField(max_length=200, verbose_name='категория')),
             ],
-            options={
-                'verbose_name_plural': 'Cities',
-                'ordering': ['-is_primary'],
-            },
         ),
         migrations.CreateModel(
-            name='Profile',
+            name='Question',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('city', models.ForeignKey(on_delete=django.db.models.deletion.RESTRICT, related_name='user', to='common.city')),
+                ('question', models.TextField(verbose_name='вопрос')),
+                ('answer', models.TextField(blank=True, verbose_name='ответ')),
+                ('tag', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='questions', to='questions.tag', verbose_name='категория')),
             ],
         ),
     ]

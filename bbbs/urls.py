@@ -36,4 +36,6 @@ urlpatterns = [
     path('api/', include('bbbs.afisha.urls')),
     path('api/', include('bbbs.common.urls')),
     path('api/', include('bbbs.main.urls')),
+    path('api/', include('bbbs.where_to_go.urls')),
+    path('api/', include('bbbs.questions.urls')),
 ]

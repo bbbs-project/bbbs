@@ -27,6 +27,8 @@ INSTALLED_APPS = [
     'bbbs.user',
     'bbbs.afisha',
     'bbbs.common',
+    'bbbs.where_to_go',
+    'bbbs.questions',
 ]
 
 MIDDLEWARE = [
